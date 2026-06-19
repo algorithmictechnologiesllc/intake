@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-Meeting Brief — Algorithmic Technologies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     CONFIG NOTE: To change where submissions are emailed,
+     edit the CONFIG.email value in the <script> at the bottom.
+     ========================================================= */
+
+  :root{
+    --ink:#16202B;        /* deep diesel slate — structure & text */
+    --ink-soft:#4A5663;   /* secondary text */
+    --paper:#F3F1EA;      /* warm paper background */
+    --card:#FFFFFF;
+    --line:#D9DEE3;
+    --line-strong:#C2C9D0;
+    --amber:#E0921F;      /* marker-light signal accent */
+    --amber-deep:#B5740F;
+    --steel:#2C5F7C;      /* cool secondary */
+    --ok:#1F7A4D;
+    --err:#B4361F;
+    --field-bg:#FBFAF6;
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{margin:0;padding:0;}
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:40px 20px 80px;
+  }
+
+  .sheet{
+    max-width:760px;
+    margin:0 auto;
+    background:var(--card);
+    border:1px solid var(--line-strong);
+    box-shadow:0 1px 0 var(--line), 0 22px 50px -28px rgba(22,32,43,.45);
+  }
+
+  /* ---------- Manifest header ---------- */
+  .head{
+    border-bottom:2px solid var(--ink);
+    padding:26px 30px 22px;
+    position:relative;
+  }
+  .head::before{
+    content:"";
+    position:absolute;left:0;top:0;height:6px;width:100%;
+    background:repeating-linear-gradient(135deg,var(--amber) 0 18px,var(--ink) 18px 36px);
+    opacity:.9;
+  }
+  .brandrow{
+    display:flex;justify-content:space-between;align-items:flex-end;gap:18px;
+    flex-wrap:wrap;margin-top:10px;
+  }
+  .brand{
+    font-family:"Saira Condensed",sans-serif;
+    font-weight:700;
+    letter-spacing:.4px;
+    font-size:30px;
+    line-height:1;
+    text-transform:uppercase;
+  }
+  .brand span{color:var(--amber-deep);}
+  .doccode{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    text-align:right;
+    line-height:1.7;
+    letter-spacing:.3px;
+  }
+  .doccode b{color:var(--ink);font-weight:500;}
+  .lede{
+    margin:16px 0 0;
+    max-width:60ch;
+    color:var(--ink-soft);
+    font-size:14.5px;
+  }
+
+  /* ---------- Sections ---------- */
+  form{padding:8px 30px 30px;}
+  fieldset{border:0;margin:0;padding:26px 0 4px;border-top:1px solid var(--line);}
+  fieldset:first-of-type{border-top:0;}
+  legend{padding:0;width:100%;}
+  .eyebrow{
+    display:flex;align-items:center;gap:12px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--ink);font-weight:500;margin-bottom:18px;
+  }
+  .eyebrow .num{
+    color:var(--amber-deep);font-weight:500;
+  }
+  .eyebrow .bar{flex:1;height:1px;background:var(--line);}
+
+  /* ---------- Grid + fields ---------- */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;}
+  .full{grid-column:1 / -1;}
+  @media(max-width:560px){ .grid{grid-template-columns:1fr;} }
+
+  .field{display:flex;flex-direction:column;gap:6px;}
+  label.lab{
+    font-size:12.5px;font-weight:600;letter-spacing:.2px;
+    color:var(--ink);text-transform:uppercase;
+  }
+  .req{color:var(--amber-deep);}
+  .opt{color:var(--ink-soft);font-weight:400;text-transform:none;letter-spacing:0;}
+
+  input[type=text],input[type=email],input[type=tel],input[type=url],input[type=number],select,textarea{
+    font-family:inherit;font-size:15px;color:var(--ink);
+    background:var(--field-bg);
+    border:1px solid var(--line-strong);
+    border-radius:2px;
+    padding:11px 12px;
+    width:100%;
+    transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  textarea{resize:vertical;min-height:84px;}
+  select{appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2316202B' stroke-width='1.6'/></svg>");
+    background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;}
+
+  input:focus,select:focus,textarea:focus{
+    outline:none;border-color:var(--amber);
+    box-shadow:0 0 0 3px rgba(224,146,31,.22);
+    background:#fff;
+  }
+  .field.invalid input,.field.invalid select,.field.invalid textarea{
+    border-color:var(--err);box-shadow:0 0 0 3px rgba(180,54,31,.15);
+  }
+  .errmsg{font-size:12px;color:var(--err);display:none;}
+  .field.invalid .errmsg{display:block;}
+
+  /* ---------- Checkbox sets ---------- */
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:9px 18px;margin-top:4px;}
+  @media(max-width:560px){ .checks{grid-template-columns:1fr;} }
+  .chk{
+    display:flex;align-items:flex-start;gap:9px;
+    font-size:14px;color:var(--ink);cursor:pointer;
+    padding:8px 10px;border:1px solid var(--line);border-radius:2px;
+    background:var(--field-bg);transition:border-color .12s ease,background .12s ease;
+  }
+  .chk:hover{border-color:var(--line-strong);}
+  .chk input{margin:2px 0 0;accent-color:var(--amber-deep);width:16px;height:16px;flex:0 0 auto;}
+  .chk.on{border-color:var(--amber);background:#fff;}
+
+  .hint{font-size:12.5px;color:var(--ink-soft);margin:-4px 0 14px;}
+
+  /* honeypot */
+  .gotcha{position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden;}
+
+  /* ---------- Submit ---------- */
+  .foot{
+    margin-top:28px;padding-top:22px;border-top:2px solid var(--ink);
+    display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:space-between;
+  }
+  .submit{
+    font-family:"Saira Condensed",sans-serif;font-weight:700;
+    text-transform:uppercase;letter-spacing:1px;font-size:18px;
+    color:var(--ink);background:var(--amber);
+    border:1px solid var(--amber-deep);border-radius:2px;
+    padding:13px 30px;cursor:pointer;
+    transition:transform .08s ease, background .15s ease, box-shadow .15s ease;
+    box-shadow:0 2px 0 var(--amber-deep);
+  }
+  .submit:hover{background:#e6a02e;}
+  .submit:active{transform:translateY(2px);box-shadow:0 0 0 var(--amber-deep);}
+  .submit:disabled{opacity:.6;cursor:not-allowed;}
+  .footnote{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);max-width:38ch;}
+
+  /* ---------- Status / success ---------- */
+  .status{display:none;padding:14px 16px;margin-top:18px;border-radius:2px;font-size:14px;}
+  .status.show{display:block;}
+  .status.error{background:#fbeae6;border:1px solid var(--err);color:#7d2515;}
+  .success-card{display:none;padding:54px 30px;text-align:center;}
+  .success-card.show{display:block;}
+  .success-mark{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:2px;
+    color:var(--amber-deep);text-transform:uppercase;
+  }
+  .success-card h2{
+    font-family:"Saira Condensed",sans-serif;text-transform:uppercase;
+    font-size:32px;margin:14px 0 8px;letter-spacing:.5px;
+  }
+  .success-card p{color:var(--ink-soft);max-width:46ch;margin:0 auto;font-size:15px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+  <main class="sheet">
+    <header class="head">
+      <div class="doccode" style="text-align:left;">FORM&nbsp;<b>AT-01</b> · PRE-MEETING INTAKE</div>
+      <div class="brandrow">
+        <div class="brand">Algorithmic <span>Technologies</span></div>
+        <div class="doccode">
+          DATA ANALYTICS FOR CARRIERS<br>
+          DOC&nbsp;REV&nbsp;<b>2026.1</b>
+        </div>
+      </div>
+      <p class="lede">A few minutes here saves an hour in the meeting. Tell us how your operation runs today — fleet, systems, and where the money's leaking — and we'll walk in already knowing where to look.</p>
+    </header>
+
+    <!-- ============ FORM ============ -->
+    <form id="intake" method="POST" target="ats_iframe" accept-charset="UTF-8" novalidate>
+
+      <!-- 01 -->
+      <fieldset>
+        <legend><div class="eyebrow"><span class="num">01</span> Company &amp; Contact <span class="bar"></span></div></legend>
+        <div class="grid">
+          <div class="field full">
+            <label class="lab" for="company">Company name <span class="req">*</span></label>
+            <input type="text" id="company" name="Company" autocomplete="organization">
+            <span class="errmsg">Please enter your company name.</span>
+          </div>
+          <div class="field">
+            <label class="lab" for="contact">Your name <span class="req">*</span></label>
+            <input type="text" id="contact" name="Contact Name" autocomplete="name">
+            <span class="errmsg">Please enter your name.</span>
+          </div>
+          <div class="field">
+            <label class="lab" for="role">Role / title <span class="opt">(optional)</span></label>
+            <input type="text" id="role" name="Role" placeholder="Owner, Fleet Manager…">
+          </div>
+          <div class="field">
+            <label class="lab" for="email">Email <span class="req">*</span></label>
+            <input type="email" id="email" name="Email" autocomplete="email">
+            <span class="errmsg">Please enter a valid email.</span>
+          </div>
+          <div class="field">
+            <label class="lab" for="phone">Phone <span class="opt">(optional)</span></label>
+            <input type="tel" id="phone" name="Phone" autocomplete="tel">
+          </div>
+          <div class="field">
+            <label class="lab" for="mcdot">MC / DOT number <span class="opt">(optional)</span></label>
+            <input type="text" id="mcdot" name="MC/DOT">
+          </div>
+          <div class="field">
+            <label class="lab" for="website">Website <span class="opt">(optional)</span></label>
+            <input type="url" id="website" name="Website" placeholder="https://">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 02 -->
+      <fieldset>
+        <legend><div class="eyebrow"><span class="num">02</span> Operation Profile <span class="bar"></span></div></legend>
+        <div class="grid">
+          <div class="field">
+            <label class="lab" for="trucks">Power units / trucks <span class="req">*</span></label>
+            <input type="number" id="trucks" name="Power Units" min="1" inputmode="numeric">
+            <span class="errmsg">How many trucks do you run?</span>
+          </div>
+          <div class="field">
+            <label class="lab" for="trailers">Trailers <span class="opt">(optional)</span></label>
+            <input type="number" id="trailers" name="Trailers" min="0" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label class="lab" for="optype">Operation type <span class="req">*</span></label>
+            <select id="optype" name="Operation Type">
+              <option value="">Select…</option>
+              <option>OTR / Long-haul</option>
+              <option>Regional</option>
+              <option>Local / Last-mile</option>
+              <option>Dedicated</option>
+              <option>Mixed</option>
+            </select>
+            <span class="errmsg">Please pick an operation type.</span>
+          </div>
+          <div class="field">
+            <label class="lab" for="authority">Authority <span class="opt">(optional)</span></label>
+            <select id="authority" name="Authority">
+              <option value="">Select…</option>
+              <option>Carrier</option>
+              <option>Broker</option>
+              <option>Carrier + Broker</option>
+              <option>Owner-Operator</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="lab" for="freight">Primary freight / commodity <span class="opt">(optional)</span></label>
+            <input type="text" id="freight" name="Primary Freight" placeholder="Dry van, reefer, flatbed…">
+          </div>
+          <div class="field">
+            <label class="lab" for="years">Years in operation <span class="opt">(optional)</span></label>
+            <input type="number" id="years" name="Years Operating" min="0" inputmode="numeric">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 03 -->
+      <fieldset>
+        <legend><div class="eyebrow"><span class="num">03</span> Systems &amp; Data <span class="bar"></span></div></legend>
+        <div class="grid">
+          <div class="field">
+            <label class="lab" for="tms">TMS <span class="opt">(optional)</span></label>
+            <input type="text" id="tms" name="TMS" placeholder="e.g. McLeod, TruckingOffice…">
+          </div>
+          <div class="field">
+            <label class="lab" for="eld">ELD / telematics <span class="opt">(optional)</span></label>
+            <select id="eld" name="ELD/Telematics">
+              <option value="">Select…</option>
+              <option>Samsara</option>
+              <option>Motive (KeepTruckin)</option>
+              <option>Geotab</option>
+              <option>Omnitracs</option>
+              <option>Other</option>
+              <option>None</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="lab" for="maint">Maintenance software <span class="opt">(optional)</span></label>
+            <input type="text" id="maint" name="Maintenance Software" placeholder="e.g. Fullbay…">
+          </div>
+          <div class="field">
+            <label class="lab" for="accounting">Accounting software <span class="opt">(optional)</span></label>
+            <input type="text" id="accounting" name="Accounting Software" placeholder="QuickBooks…">
+          </div>
+          <div class="field full">
+            <label class="lab" for="history">How much historical data can you share? <span class="opt">(optional)</span></label>
+            <select id="history" name="Historical Data">
+              <option value="">Select…</option>
+              <option>Less than 3 months</option>
+              <option>3–6 months</option>
+              <option>6–12 months</option>
+              <option>1–2 years</option>
+              <option>2+ years</option>
+              <option>Not sure</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 04 -->
+      <fieldset>
+        <legend><div class="eyebrow"><span class="num">04</span> Metrics You Track Today <span class="bar"></span></div></legend>
+        <p class="hint">Check anything you currently watch. Blanks tell us where the gaps are — that's useful too.</p>
+        <div class="checks" data-group="Metrics Tracked">
+          <label class="chk"><input type="checkbox" value="Revenue per mile"> Revenue per mile</label>
+          <label class="chk"><input type="checkbox" value="Cost per mile"> Cost per mile</label>
+          <label class="chk"><input type="checkbox" value="Operating ratio"> Operating ratio</label>
+          <label class="chk"><input type="checkbox" value="Deadhead %"> Deadhead %</label>
+          <label class="chk"><input type="checkbox" value="Fuel efficiency / MPG"> Fuel efficiency / MPG</label>
+          <label class="chk"><input type="checkbox" value="Driver turnover"> Driver turnover</label>
+          <label class="chk"><input type="checkbox" value="On-time %"> On-time delivery %</label>
+          <label class="chk"><input type="checkbox" value="Lane / customer profitability"> Lane / customer profitability</label>
+          <label class="chk"><input type="checkbox" value="None yet"> None yet — gut feel</label>
+        </div>
+      </fieldset>
+
+      <!-- 05 -->
+      <fieldset>
+        <legend><div class="eyebrow"><span class="num">05</span> Where It Hurts <span class="bar"></span></div></legend>
+        <p class="hint">Pick the spots costing you the most right now.</p>
+        <div class="checks" data-group="Pain Points">
+          <label class="chk"><input type="checkbox" value="Thin margins / profitability"> Thin margins / profitability</label>
+          <label class="chk"><input type="checkbox" value="Rising costs"> Rising costs</label>
+          <label class="chk"><input type="checkbox" value="Deadhead / utilization"> Deadhead / utilization</label>
+          <label class="chk"><input type="checkbox" value="Driver retention"> Driver retention</label>
+          <label class="chk"><input type="checkbox" value="Maintenance / downtime"> Maintenance / downtime</label>
+          <label class="chk"><input type="checkbox" value="Compliance / CSA"> Compliance / CSA scores</label>
+          <label class="chk"><input type="checkbox" value="Cash flow"> Cash flow</label>
+          <label class="chk"><input type="checkbox" value="Dispatch efficiency"> Dispatch efficiency</label>
+          <label class="chk"><input type="checkbox" value="No visibility into the data"> No visibility into the data</label>
+        </div>
+        <div class="grid" style="margin-top:18px;">
+          <div class="field full">
+            <label class="lab" for="success">What would make this worth it? <span class="opt">(optional)</span></label>
+            <textarea id="success" name="Goals" placeholder="If we nailed one thing in 90 days, what would it be?"></textarea>
+          </div>
+          <div class="field full">
+            <label class="lab" for="notes">Anything else we should know? <span class="opt">(optional)</span></label>
+            <textarea id="notes" name="Notes"></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- honeypot anti-spam -->
+      <input type="text" name="_honey" class="gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <!-- FormSubmit control fields (filled / used at submit time) -->
+      <input type="hidden" name="_subject" id="hidden_subject">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="Metrics Tracked" id="hidden_metrics">
+      <input type="hidden" name="Pain Points" id="hidden_pains">
+
+      <div class="status error" id="status" role="alert"></div>
+
+      <div class="foot">
+        <button type="submit" class="submit" id="submitBtn">Send brief</button>
+        <div class="footnote">Goes straight to the Algorithmic Technologies desk. We'll follow up to lock the meeting.</div>
+      </div>
+    </form>
+
+    <!-- ============ SUCCESS ============ -->
+    <div class="success-card" id="successCard">
+      <div class="success-mark">// Brief received</div>
+      <h2>Thanks — we've got it.</h2>
+      <p>Your operation profile is on our desk. We'll review it and reach out shortly to confirm the meeting. Talk soon.</p>
+    </div>
+  </main>
+
+  <!-- hidden target frame: receives the FormSubmit response without leaving the page -->
+  <iframe name="ats_iframe" id="ats_iframe" title="submission" style="display:none" tabindex="-1" aria-hidden="true"></iframe>
+
+<script>
+  /* =========================================================
+     CONFIG — change the destination email here if needed.
+     Submissions are delivered by FormSubmit (formsubmit.co),
+     a free no-account form-to-email relay.
+     ========================================================= */
+  const CONFIG = {
+    email: "info@algorithmictechnologies.com",
+    subjectPrefix: "New trucking intake —"
+  };
+
+  const form = document.getElementById('intake');
+  const statusBox = document.getElementById('status');
+  const submitBtn = document.getElementById('submitBtn');
+
+  // visual toggle for checkboxes
+  document.querySelectorAll('.chk input').forEach(cb=>{
+    cb.addEventListener('change',()=>cb.closest('.chk').classList.toggle('on',cb.checked));
+  });
+
+  // clear invalid state on input
+  form.querySelectorAll('input,select,textarea').forEach(el=>{
+    el.addEventListener('input',()=>el.closest('.field')?.classList.remove('invalid'));
+    el.addEventListener('change',()=>el.closest('.field')?.classList.remove('invalid'));
+  });
+
+  function markInvalid(id){
+    const f = document.getElementById(id)?.closest('.field');
+    if(f) f.classList.add('invalid');
+    return document.getElementById(id);
+  }
+
+  function validate(){
+    let firstBad = null;
+    const required = ['company','contact','email','trucks','optype'];
+    required.forEach(id=>{
+      const el = document.getElementById(id);
+      let bad = !el.value.trim();
+      if(id==='email' && el.value.trim()){
+        bad = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim());
+      }
+      if(bad){ markInvalid(id); if(!firstBad) firstBad = el; }
+    });
+    if(firstBad){ firstBad.focus(); firstBad.scrollIntoView({behavior:'smooth',block:'center'}); }
+    return !firstBad;
+  }
+
+  function collectChecks(group){
+    return [...document.querySelectorAll(`[data-group="${group}"] input:checked`)]
+      .map(c=>c.value).join(', ');
+  }
+
+  // Point the form at FormSubmit using the configured email (single source of truth)
+  form.action = `https://formsubmit.co/${CONFIG.email}`;
+
+  let submitting = false;
+
+  // When the hidden frame finishes loading AFTER a submit, show the success panel.
+  document.getElementById('ats_iframe').addEventListener('load', ()=>{
+    if(!submitting) return;            // ignore the initial blank load
+    form.style.display='none';
+    statusBox.classList.remove('show');
+    const card = document.getElementById('successCard');
+    card.classList.add('show');
+    card.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    statusBox.classList.remove('show');
+    if(!validate()) return;
+
+    // honeypot
+    if(form.querySelector('[name="_honey"]').value){ return; }
+
+    // fold checkbox groups into the hidden fields that actually get posted
+    document.getElementById('hidden_metrics').value = collectChecks('Metrics Tracked');
+    document.getElementById('hidden_pains').value   = collectChecks('Pain Points');
+    document.getElementById('hidden_subject').value =
+      `${CONFIG.subjectPrefix} ${document.getElementById('company').value.trim() || 'New lead'}`;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    submitting = true;
+
+    // native cross-origin POST into the hidden frame — not blocked by file:// CORS
+    form.submit();
+  });
+</script>
+</body>
+</html>
