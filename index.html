@@ -283,6 +283,7 @@
               <option>Other</option>
               <option>None</option>
             </select>
+            <input type="text" id="eld_other" name="ELD (Other)" placeholder="Type your provider…" disabled hidden>
           </div>
           <div class="field">
             <label class="lab" for="maint">Maintenance software <span class="opt">(optional)</span></label>
@@ -317,7 +318,7 @@
           <label class="chk"><input type="checkbox" value="Deadhead %"> Deadhead %</label>
           <label class="chk"><input type="checkbox" value="Fuel efficiency / MPG"> Fuel efficiency / MPG</label>
           <label class="chk"><input type="checkbox" value="Driver turnover"> Driver turnover</label>
-          <label class="chk"><input type="checkbox" value="On-time %"> On-time delivery %</label>
+          <label class="chk"><input type="checkbox" value="Operating cost per unit"> Operating cost per unit</label>
           <label class="chk"><input type="checkbox" value="Lane / customer profitability"> Lane / customer profitability</label>
           <label class="chk"><input type="checkbox" value="None yet"> None yet — gut feel</label>
         </div>
@@ -388,6 +389,12 @@
 
   document.querySelectorAll('.chk input').forEach(cb=>{
     cb.addEventListener('change',()=>cb.closest('.chk').classList.toggle('on',cb.checked));
+  });
+  const eldSel=document.getElementById('eld'), eldOther=document.getElementById('eld_other');
+  eldSel.addEventListener('change',()=>{
+    const isOther=eldSel.value==='Other';
+    eldOther.hidden=!isOther; eldOther.disabled=!isOther;
+    if(isOther){ eldOther.focus(); } else { eldOther.value=''; }
   });
   form.querySelectorAll('input,select,textarea').forEach(el=>{
     el.addEventListener('input',()=>el.closest('.field')?.classList.remove('invalid'));
